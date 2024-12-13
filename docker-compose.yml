@@ -11,6 +11,20 @@ services:
     networks:
       - caddy_network
 
+  redis-insight:
+    image: redis/redisinsight:latest
+    container_name: redis-insight
+    ports:
+      - "5540:5540"  # RedisInsight accesible en el puerto 5540
+    environment:
+      - RI_APP_PORT=5540                         # Puerto interno de RedisInsight
+      - RI_APP_HOST=0.0.0.0                      # Host que escucha RedisInsigh
+    volumes:
+      - ./certs:/certs                           # Monta la carpeta de certificados SSL
+    networks:
+      - caddy_network
+    restart: unless-stopped
+
 volumes:
   redis-data:
 
