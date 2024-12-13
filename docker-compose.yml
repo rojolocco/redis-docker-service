@@ -6,16 +6,7 @@ services:
       - "6379:6379"
     volumes:
       - redis-data:/data
-    networks:
-      - caddy_network
-
-  redis-commander:
-    image: rediscommander/redis-commander:latest
-    container_name: redis-commander
-    env_file:
-      - .env.prod
-    ports:
-      - "8082:8081"
+    command: ["redis-server", "--requirepass", "tu_contraseña_redis"]
     networks:
       - caddy_network
 
