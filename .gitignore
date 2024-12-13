@@ -4,6 +4,3 @@
 
 # docker
 docker-compose.dev.yml
-
-# Otros
-redis.conf
