@@ -75,4 +75,4 @@ El script `init-redis.sh` crea los siguientes datos de ejemplo en Redis:
 
 ## Licencia
 
-Este proyecto está licenciado bajo la MIT License.
+Este proyecto está licenciado bajo la MIT License
