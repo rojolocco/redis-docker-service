@@ -1,10 +1,11 @@
-version: '3.8'
-
 services:
   redis:
     container_name: redis
     image: redis:latest
     restart: always
+    env_file:
+      - .env
+    command: ["sh", "-c", "redis-server --requirepass \"$REDIS_PASSWORD\""]
     volumes:
       - data-redis:/data
     networks:
@@ -36,11 +37,6 @@ services:
         limits:
           cpus: '0.5'
           memory: 512M
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
 networks:
   caddy_network:
