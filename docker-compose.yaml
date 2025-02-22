@@ -28,7 +28,7 @@ services:
     env_file:
       - .env
     ports:
-      - "8083:8081"
+      - "8082:8080"
     user: redis
     networks:
       - caddy_network
