@@ -24,7 +24,6 @@ services:
   redis-commander:
     container_name: redis-commander
     image: ghcr.io/joeferner/redis-commander:latest
-    restart: always
     env_file:
       - .env
     ports:
