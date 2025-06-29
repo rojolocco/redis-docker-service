@@ -1,73 +1,133 @@
 # Redis Docker Service
 
-This project provides a Docker setup for running Redis and Redis Commander, a web-based interface for managing Redis databases.
+A containerized Redis service using Docker and Docker Compose, configured for both development and production environments.
 
-## Description
+## Overview
 
-This repository contains Docker configurations to easily deploy Redis and Redis Commander. Redis is an in-memory data structure store, used as a database, cache, and message broker. Redis Commander allows you to manage your Redis databases through a user-friendly web interface.
+This repository provides a ready-to-use Redis 8.0 instance running in Docker. Redis is an open-source, in-memory data structure store that can be used as a database, cache, message broker, and more.
 
-## Services
+## Features
 
-- **Redis**: The main service that runs the Redis database.
-  - **Container Name**: redis
-  - **Image**: redis:latest
-  - **Ports**: Exposed on the default Redis port (6379)
-  - **Health Check**: Ensures Redis is running by pinging the server.
+- Redis 8.0 in a Docker container
+- Persistent data storage using Docker volumes
+- Separate configurations for development and production
+- Health checks for production environment
+- Integration with external network (caddy_network)
+- Environment variable configuration
 
-- **Redis Commander**: A web interface for managing Redis.
-  - **Container Name**: redis-commander
-  - **Image**: ghcr.io/joeferner/redis-commander:latest
-  - **Ports**: Accessible on port 8083
-  - **Environment Variables**: Loaded from `.env.dev`
+## Prerequisites
 
-## Installation
+- Docker and Docker Compose installed on your system
+- External Docker network named `caddy_network` (must be created before running this service)
 
-1. Clone the repository:
+## Setup
+
+1. Clone this repository:
 
    ```bash
-   git clone https://github.com/yourusername/your-repo.git
+   git clone <repository-url>
+   cd redis-docker-service
    ```
 
-2. Navigate to the project directory:
+2. Create the required environment file:
 
    ```bash
-   cd your-repo
+   # For development
+   cp .env.example .env.dev
+   
+   # For production
+   cp .env.example .env
    ```
 
-3. Start the services using Docker Compose:
+3. Configure the environment variables in the `.env` or `.env.dev` file:
 
-   ```bash
-   docker-compose up -d
+   ```env
+   REDIS_HOST=redis
+   REDIS_PASSWORD=your_secure_password
    ```
 
 ## Usage
 
-- Access Redis Commander at [http://localhost:8083](http://localhost:8083) to manage your Redis databases.
-- Use the Redis CLI or any Redis client to connect to the Redis service at `localhost:6379`.
+### Development Environment
 
-## Contributing
+To start Redis in development mode:
 
-1. Fork the repository.
-2. Create a new branch:
+```bash
+docker-compose -f docker-compose.dev.yaml up -d
+```
 
-   ```bash
-   git checkout -b feature/YourFeature
-   ```
+### Production Environment
 
-3. Make your changes and commit them:
+To start Redis in production mode:
 
-   ```bash
-   git commit -m "Add your message"
-   ```
+```bash
+docker-compose up -d
+```
 
-4. Push to the branch:
+### Connecting to Redis
 
-   ```bash
-   git push origin feature/YourFeature
-   ```
+You can connect to the Redis instance using the Redis CLI:
 
-5. Open a pull request.
+```bash
+docker exec -it redis redis-cli
+```
+
+If you've set a password in the environment file:
+
+```bash
+docker exec -it redis redis-cli -a your_secure_password
+```
+
+## Configuration
+
+### Environment Variables
+
+- `REDIS_HOST`: The hostname for Redis (default: redis)
+- `REDIS_PASSWORD`: Password for Redis authentication (recommended for production)
+
+### Docker Compose Configuration
+
+The service is configured with:
+
+- Container name: `redis`
+- Image: `redis:8.0`
+- Restart policy: `always`
+- Volume: `data-redis` mounted to `/data` for persistence
+- Network: Connected to the external `caddy_network`
+- Health check (production only): Verifies Redis is responding correctly
+
+## Data Persistence
+
+Redis data is persisted using a Docker volume named `data-redis`. This ensures your data survives container restarts and updates.
+
+## About Redis
+
+Redis is an open-source, in-memory data structure store that can be used as a:
+
+- Database
+- Cache
+- Message broker
+- Streaming engine
+
+### Key Features of Redis
+
+- In-memory data storage with optional persistence
+- Support for various data structures (strings, hashes, lists, sets, sorted sets)
+- Built-in replication and automatic partitioning with Redis Cluster
+- Lua scripting
+- Transactions
+- Pub/Sub messaging
+- High availability via Redis Sentinel
+
+### Common Use Cases
+
+- Caching
+- Session management
+- Real-time analytics
+- Leaderboards/counting
+- Message queuing
+- Rate limiting
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+See the [LICENSE](LICENSE) file for details.
