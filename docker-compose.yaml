@@ -5,7 +5,6 @@ services:
     restart: always
     env_file:
       - .env
-    # command: ["sh", "-c", "redis-server --requirepass \"$REDIS_PASSWORD\""]
     volumes:
       - data-redis:/data
     networks:
@@ -26,8 +25,8 @@ services:
     image: ghcr.io/joeferner/redis-commander:latest
     env_file:
       - .env
-    ports:
-      - "8082:8081"
+    # ports:
+    #   - "8082:8081"
     user: redis
     networks:
       - caddy_network
@@ -37,9 +36,9 @@ services:
           cpus: '0.5'
           memory: 512M
 
+volumes:
+  data-redis:
+
 networks:
   caddy_network:
     external: true
-
-volumes:
-  data-redis:
