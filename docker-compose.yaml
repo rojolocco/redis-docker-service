@@ -8,8 +8,7 @@ services:
     volumes:
       - data-redis:/data
     networks:
-      # - caddy_network
-      - traefik_network
+      - internal_network
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 30s
@@ -20,5 +19,5 @@ volumes:
   data-redis:
 
 networks:
-  traefik_network:
+  internal_network:
     external: true
