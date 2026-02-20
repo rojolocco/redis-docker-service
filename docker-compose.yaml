@@ -1,6 +1,6 @@
 services:
   redis:
-    image: redis:8.6.0
+    image: redis:latest
     container_name: redis
     restart: always
     env_file:
